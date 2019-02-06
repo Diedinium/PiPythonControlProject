@@ -5,7 +5,6 @@ import scrollphathd as sphd
 from envirophat import weather
 from envirophat import light
 
-
 @touchphat.on_touch("A")
 def show_temp():
     sphd.clear()
