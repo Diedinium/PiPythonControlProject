@@ -3,27 +3,28 @@
 Note: ssml must be well-formed according to:
     https://www.w3.org/TR/speech-synthesis/
 """
-import os
-import pygame
-import touchphat
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/pi/Documents/TextToSpeechTest-1ccf470ebf59.json"
+#Plays audio of current temperature
+def say_value(x):
+    import os
+    import pygame
+    import touchphat
+    from envirophat import weather
 
-from google.cloud import texttospeech
-from envirophat import weather
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/pi/Documents/TextToSpeechTest-1ccf470ebf59.json"
 
-def say_temp():
+    from google.cloud import texttospeech
+    
     # Instantiates a client
     client = texttospeech.TextToSpeechClient()
 
-    degrees = weather.temperature()
+    #degrees = weather.temperature()
 
-    temperature = ("The temperature is currently " + str(round(degrees, 1)) + " degrees celcius")
-    print(temperature)
-    # temperature = "Naish wants me to say nigger"
+    #temperature = ("The temperature is currently " + str(round(degrees, 1)) + " degrees celcius")
+    #print(temperature)
 
     # Set the text input to be synthesized
-    synthesis_input = texttospeech.types.SynthesisInput(text=temperature)
+    synthesis_input = texttospeech.types.SynthesisInput(text=x)
 
     # Build the voice request, select the language code ("en-US") and the ssml
     # voice gender ("neutral")
@@ -54,3 +55,5 @@ def say_temp():
         continue
 
     touchphat.all_off()
+
+

@@ -4,11 +4,18 @@ import touchphat
 import scrollphathd as sphd
 from envirophat import weather
 from envirophat import light
+from speechtest import say_value
 
 @touchphat.on_touch("A")
 def show_temp():
     sphd.clear()
-    temperature = (' Temp: ' + str(round(weather.temperature(), 1)) + 'C')
+    degrees = round(weather.temperature(), 1)
+    
+    speaktemp = ("The temperature is currently " + str(degrees) + " degrees celcius")
+    print(speaktemp)
+    say_value(x=speaktemp)
+    
+    temperature = (' Temp: ' + str(degrees) + 'C')
     sphd.write_string(temperature, brightness=0.25)
     length = sphd.get_buffer_shape()[0] - 17
     for x in range(length):
@@ -23,8 +30,14 @@ def show_temp():
 @touchphat.on_touch("B")
 def show_light():
     sphd.clear()
-    lightLevel = (' Light: ' + str(light.light()))
-    sphd.write_string(lightLevel, brightness=0.25)
+    lightvalue = light.light()
+
+    speaklight = ("The current light level is " + str(lightvalue))
+    print(speaklight)
+    say_value(x=speaklight)
+    
+    lightoutput = (" Light: " + str(lightvalue))
+    sphd.write_string(lightoutput, brightness=0.25)
     length = sphd.get_buffer_shape()[0] - 17
     for x in range(length):
         sphd.show()
