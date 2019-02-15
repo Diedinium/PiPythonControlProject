@@ -4,7 +4,7 @@ import touchphat
 import scrollphathd as sphd
 from envirophat import weather
 from envirophat import light
-from speechtest import say_value
+from speechoutput import say_value
 
 @touchphat.on_touch("A")
 def show_temp():
@@ -51,8 +51,13 @@ def show_light():
 @touchphat.on_touch("C")
 def show_pressure():
     sphd.clear()
-    pressureValue = (' Pressure: ' + str(int(weather.pressure())) + 'hPa')
-    sphd.write_string(pressureValue, brightness=0.25)
+    pressurevalue = (weather.pressure())
+
+    speakpressure = ("The current pressure is " + str(round(pressurevalue / 1000, 1)) + " kilopascals")
+    print(speakpressure)
+    say_value(x=speakpressure)
+    
+    sphd.write_string("Pressure: " + str(round(pressurevalue / 1000, 1)) + " kPa", brightness=0.25)
     length = sphd.get_buffer_shape()[0] - 17
     for x in range(length):
         sphd.show()
@@ -66,8 +71,18 @@ def show_pressure():
 @touchphat.on_touch("D")
 def show_altitude():
     sphd.clear()
-    AltitudeValue = (' Altitude: ' + str(int(weather.altitude(qnh=1018))) + 'm')
-    sphd.write_string(AltitudeValue, brightness=0.25)
+    altitudevalue = weather.altitude(qnh=1025)
+
+    if (altitudevalue <= 0):
+        sealevel = " meters below sea level"
+    elif (altitudevalue >= 1):
+        sealevel = " meters above sea level"
+
+    speakaltitude = ("You are currently " + str(int(altitudevalue)) + sealevel)
+    print(speakaltitude)
+    say_value(x=speakaltitude)
+    
+    sphd.write_string("Altitude: " + str(int(altitudevalue)) + "m", brightness=0.25)
     length = sphd.get_buffer_shape()[0] - 17
     for x in range(length):
         sphd.show()
@@ -81,8 +96,14 @@ def show_altitude():
 @touchphat.on_touch("Back")
 def show_datetime():
     sphd.clear()
-    currentDT = ('DateTime: ' + str(datetime.datetime.now()))
-    sphd.write_string(currentDT, brightness=0.25)
+    currentDT = datetime.datetime.now()
+    print (currentDT.strftime("%I:%M %p"))
+
+    speaktime = ("It is currently " + str(currentDT.strftime("%I:%M %p")))
+    print(speaktime)
+    say_value(x=speaktime)
+    
+    sphd.write_string("Time: " + str(currentDT.strftime("%I:%M %p")), brightness=0.25)
     length = sphd.get_buffer_shape()[0] - 17
     for x in range(length):
         sphd.show()
