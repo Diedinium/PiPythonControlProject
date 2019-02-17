@@ -1,27 +1,27 @@
-"""Synthesizes speech from the input string of text or ssml.
+# Synthesizes speech from the input string of text or ssml.
+# Using Google Cloud Platform Text to Speech API service
+# Made by Jake Hall
 
-Note: ssml must be well-formed according to:
-    https://www.w3.org/TR/speech-synthesis/
-"""
+# Note: ssml must be well-formed according to:
+#   https://www.w3.org/TR/speech-synthesis/
 
-#Plays audio of current temperature
+# When called function generates audio output from provided string
+
 def say_value(x):
+    # Imports
     import os
     import pygame
     import touchphat
     from envirophat import weather
-
+    
+    # Setting the environment API credentials for use with GCP Text to speech
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/pi/Documents/TextToSpeechTest-1ccf470ebf59.json"
 
+    # Import text to speech once API key is loaded into environment
     from google.cloud import texttospeech
     
     # Instantiates a client
     client = texttospeech.TextToSpeechClient()
-
-    #degrees = weather.temperature()
-
-    #temperature = ("The temperature is currently " + str(round(degrees, 1)) + " degrees celcius")
-    #print(temperature)
 
     # Set the text input to be synthesized
     synthesis_input = texttospeech.types.SynthesisInput(text=x)
@@ -46,14 +46,12 @@ def say_value(x):
         out.write(response.audio_content)
         print('Audio content written to file "output.mp3"')
         
-        
+    # Play the output.mp3 audio file    
     print('Playing audio file')
     pygame.mixer.init()
     pygame.mixer.music.load("output.mp3")
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy() == True:
         continue
-
-    touchphat.all_off()
 
 

@@ -1,4 +1,6 @@
 #Powered by NewsAPI
+# Made by Jake Hall
+
 #Imports top headlines from BBC news as a JSON file
 
 import requests
