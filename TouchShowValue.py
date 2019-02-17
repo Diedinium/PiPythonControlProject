@@ -5,6 +5,7 @@ import scrollphathd as sphd
 from envirophat import weather
 from envirophat import light
 from speechoutput import say_value
+from news import get_headline
 
 @touchphat.on_touch("A")
 def show_temp():
@@ -21,7 +22,7 @@ def show_temp():
     for x in range(length):
         sphd.show()
         sphd.scroll(1)
-        time.sleep(0.05)
+        time.sleep(0.03)
     time.sleep(1)
     sphd.clear()
     sphd.show()
@@ -42,7 +43,7 @@ def show_light():
     for x in range(length):
         sphd.show()
         sphd.scroll(1)
-        time.sleep(0.05)
+        time.sleep(0.03)
     time.sleep(1)
     sphd.clear()
     sphd.show()
@@ -62,7 +63,7 @@ def show_pressure():
     for x in range(length):
         sphd.show()
         sphd.scroll(1)
-        time.sleep(0.05)
+        time.sleep(0.03)
     time.sleep(1)
     sphd.clear()
     sphd.show()
@@ -71,14 +72,14 @@ def show_pressure():
 @touchphat.on_touch("D")
 def show_altitude():
     sphd.clear()
-    altitudevalue = weather.altitude(qnh=1025)
+    altitudevalue = weather.altitude(qnh=1020)
 
     if (altitudevalue <= 0):
         sealevel = " meters below sea level"
     elif (altitudevalue >= 1):
         sealevel = " meters above sea level"
 
-    speakaltitude = ("You are currently " + str(int(altitudevalue)) + sealevel)
+    speakaltitude = ("You are roughly " + str(int(altitudevalue)) + sealevel)
     print(speakaltitude)
     say_value(x=speakaltitude)
     
@@ -87,7 +88,7 @@ def show_altitude():
     for x in range(length):
         sphd.show()
         sphd.scroll(1)
-        time.sleep(0.05)
+        time.sleep(0.03)
     time.sleep(1)
     sphd.clear()
     sphd.show()
@@ -108,8 +109,27 @@ def show_datetime():
     for x in range(length):
         sphd.show()
         sphd.scroll(1)
-        time.sleep(0.05)
+        time.sleep(0.03)
     time.sleep(1)
     sphd.clear()
     sphd.show()
+    touchphat.all_off()
+
+#Runs on an "Enter press
+@touchphat.on_touch("Enter")
+def show_news():
+    sphd.clear()
+    content = get_headline()
+    currentDT = datetime.datetime.now()
+
+    introvoice = ('The current BBC news headline as of ' + str(currentDT.strftime("%I:%M %p")))
+    say_value(introvoice)
+
+    speaknewstitle = (content['articles'][0]['title'])
+    print(speaknewstitle)
+    say_value(speaknewstitle)
+
+    speaknewsdesc = (content['articles'][0]['description'])
+    print(speaknewsdesc)
+    say_value(speaknewsdesc)
     touchphat.all_off()
