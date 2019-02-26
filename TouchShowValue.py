@@ -121,7 +121,7 @@ def show_altitude():
     # Makes sure scrollphat buffer is clear
     sphd.clear()
     # Altitude value is fetched from weather module
-    altitudevalue = weather.altitude()
+    altitudevalue = weather.altitude(qnh=1032)
 
     # If statement controls if speach output will say "below" or "above" sea level
     if (altitudevalue <= 0):
